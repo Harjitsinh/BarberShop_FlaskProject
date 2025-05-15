@@ -1,0 +1,604 @@
+{% extends "base.html" %}
+
+{% block title %}Services & Pricing | Fama Barber Shop and Beauty Salon{% endblock %}
+
+{% block styles %}
+<style>
+    .page-header {
+        background-image: linear-gradient(rgba(17, 17, 17, 0.7), rgba(17, 17, 17, 0.7)), url("{{ url_for('static', filename='img/gallery/gallery3.jpg') }}");
+        background-position: center;
+        background-size: cover;
+    }
+    
+    .services-intro {
+        padding: 80px 0;
+        background-color: var(--light-color);
+    }
+    
+    .services-categories {
+        padding: 80px 0;
+        background-color: #f9f9f9;
+        position: relative;
+    }
+    
+    .services-list {
+        margin-top: 50px;
+    }
+    
+    .service-card {
+        display: flex;
+        background-color: var(--light-color);
+        border-radius: 4px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        padding: 30px;
+        margin-bottom: 30px;
+        transition: all 0.3s ease;
+    }
+    
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .service-icon {
+        margin-right: 25px;
+        font-size: 2rem;
+        color: var(--primary-color);
+        width: 60px;
+        height: 60px;
+        background-color: rgba(200, 169, 126, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+    }
+    
+    .service-info {
+        flex: 1;
+    }
+    
+    .service-info h3 {
+        margin-bottom: 10px;
+        font-size: 1.4rem;
+    }
+    
+    .price-table-section {
+        padding: 100px 0;
+        background-image: linear-gradient(rgba(17, 17, 17, 0.9), rgba(17, 17, 17, 0.9)), url("{{ url_for('static', filename='img/gallery/gallery3.jpg') }}");
+        background-position: center;
+        background-attachment: fixed;
+        background-size: cover;
+        color: var(--light-color);
+    }
+    
+    .price-table-section .section-title,
+    .price-table-section .section-subtitle {
+        color: var(--light-color);
+    }
+    
+    .price-table {
+        background-color: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+    
+    .price-table:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: translateY(-10px);
+    }
+    
+    .price-table h3 {
+        color: var(--primary-color);
+    }
+    
+    .service-price {
+        color: var(--primary-color);
+        font-weight: 600;
+    }
+    
+    .faq-grid {
+        margin-top: 50px;
+    }
+    
+    .faq-item {
+        margin-bottom: 20px;
+        border-radius: 4px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .faq-item:hover {
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <h1 data-aos="fade-up">Our Services</h1>
+        <div class="breadcrumbs" data-aos="fade-up" data-aos-delay="100">
+            <a href="{{ url_for('index') }}">Home</a> / <span>Services</span>
+        </div>
+    </div>
+</section>
+
+<!-- Services Intro -->
+<section class="services-intro">
+    <div class="container">
+        <div class="intro-content text-center" data-aos="fade-up">
+            <h2 class="section-title">Premium Barbering & Styling</h2>
+            <p>At Fama Barber Shop and Beauty Salon, we provide a comprehensive range of services designed to keep you looking your best. From classic haircuts to specialized treatments, our experienced barbers will ensure you leave our shop with confidence and style.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Services Categories -->
+<section class="services-categories">
+    <div class="container">
+        <div class="category-tabs" data-aos="fade-up">
+            <ul class="tabs-nav">
+                <li class="active"><a href="#all" data-category="all">All Services</a></li>
+                <li><a href="#haircut" data-category="Haircut">Haircuts</a></li>
+                <li><a href="#grooming" data-category="Grooming">Grooming</a></li>
+                <li><a href="#shaving" data-category="Shaving">Shaving</a></li>
+                <li><a href="#color" data-category="Color">Hair Color</a></li>
+                <li><a href="#package" data-category="Package">Packages</a></li>
+            </ul>
+        </div>
+        
+        <div class="services-list" id="all" data-aos="fade-up">
+            <div class="services-grid">
+                {% for service in services %}
+                <div class="service-card" data-category="{{ service.category }}">
+                    <div class="service-icon">
+                        {% if service.category == 'Haircut' %}
+                            <i class="fas fa-cut"></i>
+                        {% elif service.category == 'Grooming' %}
+                            <i class="fas fa-toilet-paper"></i>
+                        {% elif service.category == 'Shaving' %}
+                            <i class="fas fa-razor"></i>
+                        {% elif service.category == 'Color' %}
+                            <i class="fas fa-paint-brush"></i>
+                        {% elif service.category == 'Package' %}
+                            <i class="fas fa-gem"></i>
+                        {% else %}
+                            <i class="fas fa-spa"></i>
+                        {% endif %}
+                    </div>
+                    <div class="service-info">
+                        <h3>{{ service.name }}</h3>
+                        <p>{{ service.description }}</p>
+                        <div class="service-meta">
+                            <span class="service-duration"><i class="far fa-clock"></i> {{ service.duration }} min</span>
+                            <span class="service-price">${{ service.price }}</span>
+                        </div>
+                        <a href="{{ url_for('booking') }}" class="btn btn-sm">Book Now</a>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                {% if services|length == 0 %}
+                <!-- Sample services if no services exist in the database yet -->
+                <div class="service-card" data-category="Haircut">
+                    <div class="service-icon">
+                        <i class="fas fa-cut"></i>
+                    </div>
+                    <div class="service-info">
+                        <h3>Men's Haircut</h3>
+                        <p>Classic haircut with styling to achieve your desired look. Includes consultation, shampoo, and styling.</p>
+                        <div class="service-meta">
+                            <span class="service-duration"><i class="far fa-clock"></i> 30 min</span>
+                            <span class="service-price">$25.00</span>
+                        </div>
+                        <a href="{{ url_for('booking') }}" class="btn btn-sm">Book Now</a>
+                    </div>
+                </div>
+                
+                <div class="service-card" data-category="Grooming">
+                    <div class="service-icon">
+                        <i class="fas fa-toilet-paper"></i>
+                    </div>
+                    <div class="service-info">
+                        <h3>Beard Trim</h3>
+                        <p>Shape and trim your beard to perfection. Includes precise outlining and styling.</p>
+                        <div class="service-meta">
+                            <span class="service-duration"><i class="far fa-clock"></i> 20 min</span>
+                            <span class="service-price">$15.00</span>
+                        </div>
+                        <a href="{{ url_for('booking') }}" class="btn btn-sm">Book Now</a>
+                    </div>
+                </div>
+                
+                <div class="service-card" data-category="Shaving">
+                    <div class="service-icon">
+                        <i class="fas fa-razor"></i>
+                    </div>
+                    <div class="service-info">
+                        <h3>Hot Towel Shave</h3>
+                        <p>Traditional straight razor shave with hot towel treatment for the ultimate relaxing experience.</p>
+                        <div class="service-meta">
+                            <span class="service-duration"><i class="far fa-clock"></i> 45 min</span>
+                            <span class="service-price">$35.00</span>
+                        </div>
+                        <a href="{{ url_for('booking') }}" class="btn btn-sm">Book Now</a>
+                    </div>
+                </div>
+                
+                <div class="service-card" data-category="Haircut">
+                    <div class="service-icon">
+                        <i class="fas fa-child"></i>
+                    </div>
+                    <div class="service-info">
+                        <h3>Kids Haircut</h3>
+                        <p>Haircut service tailored for children under 12. Gentle approach with child-friendly stylists.</p>
+                        <div class="service-meta">
+                            <span class="service-duration"><i class="far fa-clock"></i> 25 min</span>
+                            <span class="service-price">$18.00</span>
+                        </div>
+                        <a href="{{ url_for('booking') }}" class="btn btn-sm">Book Now</a>
+                    </div>
+                </div>
+                
+                <div class="service-card" data-category="Color">
+                    <div class="service-icon">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <div class="service-info">
+                        <h3>Hair Color</h3>
+                        <p>Professional hair coloring using premium products to achieve your desired shade and look.</p>
+                        <div class="service-meta">
+                            <span class="service-duration"><i class="far fa-clock"></i> 90 min</span>
+                            <span class="service-price">$65.00</span>
+                        </div>
+                        <a href="{{ url_for('booking') }}" class="btn btn-sm">Book Now</a>
+                    </div>
+                </div>
+                
+                <div class="service-card" data-category="Package">
+                    <div class="service-icon">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <div class="service-info">
+                        <h3>VIP Package</h3>
+                        <p>Complete package with haircut, beard trim, facial, and styling for the ultimate grooming experience.</p>
+                        <div class="service-meta">
+                            <span class="service-duration"><i class="far fa-clock"></i> 75 min</span>
+                            <span class="service-price">$55.00</span>
+                        </div>
+                        <a href="{{ url_for('booking') }}" class="btn btn-sm">Book Now</a>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Price Table Section -->
+<section class="price-table-section">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <h2 class="section-title">Our Pricing</h2>
+            <p class="section-subtitle">Transparent & Competitive</p>
+        </div>
+        
+        <div class="price-tables" data-aos="fade-up">
+            <div class="price-table">
+                <h3>Haircuts & Styling</h3>
+                <ul class="price-list">
+                    {% for service in services if service.category == 'Haircut' %}
+                    <li>
+                        <span class="service-name">{{ service.name }}</span>
+                        <span class="service-price">${{ service.price }}</span>
+                    </li>
+                    {% endfor %}
+                    {% if services|length == 0 or services|selectattr('category', 'eq', 'Haircut')|list|length == 0 %}
+                    <li>
+                        <span class="service-name">Men's Haircut</span>
+                        <span class="service-price">$25.00</span>
+                    </li>
+                    <li>
+                        <span class="service-name">Kids Haircut</span>
+                        <span class="service-price">$18.00</span>
+                    </li>
+                    <li>
+                        <span class="service-name">Fade</span>
+                        <span class="service-price">$30.00</span>
+                    </li>
+                    <li>
+                        <span class="service-name">Buzz Cut</span>
+                        <span class="service-price">$20.00</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            
+            <div class="price-table">
+                <h3>Beard & Grooming</h3>
+                <ul class="price-list">
+                    {% for service in services if service.category == 'Grooming' or service.category == 'Shaving' %}
+                    <li>
+                        <span class="service-name">{{ service.name }}</span>
+                        <span class="service-price">${{ service.price }}</span>
+                    </li>
+                    {% endfor %}
+                    {% if services|length == 0 or (services|selectattr('category', 'eq', 'Grooming')|list|length + services|selectattr('category', 'eq', 'Shaving')|list|length) == 0 %}
+                    <li>
+                        <span class="service-name">Beard Trim</span>
+                        <span class="service-price">$15.00</span>
+                    </li>
+                    <li>
+                        <span class="service-name">Hot Towel Shave</span>
+                        <span class="service-price">$35.00</span>
+                    </li>
+                    <li>
+                        <span class="service-name">Beard Styling</span>
+                        <span class="service-price">$20.00</span>
+                    </li>
+                    <li>
+                        <span class="service-name">Beard Color</span>
+                        <span class="service-price">$30.00</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            
+            <div class="price-table">
+                <h3>Color & Treatments</h3>
+                <ul class="price-list">
+                    {% for service in services if service.category == 'Color' %}
+                    <li>
+                        <span class="service-name">{{ service.name }}</span>
+                        <span class="service-price">${{ service.price }}</span>
+                    </li>
+                    {% endfor %}
+                    {% if services|length == 0 or services|selectattr('category', 'eq', 'Color')|list|length == 0 %}
+                    <li>
+                        <span class="service-name">Hair Color</span>
+                        <span class="service-price">$65.00</span>
+                    </li>
+                    <li>
+                        <span class="service-name">Highlights</span>
+                        <span class="service-price">$85.00</span>
+                    </li>
+                    <li>
+                        <span class="service-name">Grey Coverage</span>
+                        <span class="service-price">$55.00</span>
+                    </li>
+                    <li>
+                        <span class="service-name">Color Correction</span>
+                        <span class="service-price">$100.00+</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            
+            <div class="price-table">
+                <h3>Package Deals</h3>
+                <ul class="price-list">
+                    {% for service in services if service.category == 'Package' %}
+                    <li>
+                        <span class="service-name">{{ service.name }}</span>
+                        <span class="service-price">${{ service.price }}</span>
+                    </li>
+                    {% endfor %}
+                    {% if services|length == 0 or services|selectattr('category', 'eq', 'Package')|list|length == 0 %}
+                    <li>
+                        <span class="service-name">Haircut & Beard Trim</span>
+                        <span class="service-price">$35.00</span>
+                    </li>
+                    <li>
+                        <span class="service-name">VIP Package</span>
+                        <span class="service-price">$55.00</span>
+                    </li>
+                    <li>
+                        <span class="service-name">Father & Son</span>
+                        <span class="service-price">$40.00</span>
+                    </li>
+                    <li>
+                        <span class="service-name">Complete Makeover</span>
+                        <span class="service-price">$75.00</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Process Section -->
+<section class="process-section">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <h2 class="section-title">Our Process</h2>
+            <p class="section-subtitle">The Fama Experience</p>
+        </div>
+        
+        <div class="process-steps">
+            <div class="process-step" data-aos="fade-up" data-aos-delay="100">
+                <div class="step-number">1</div>
+                <div class="step-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3>Book Appointment</h3>
+                <p>Schedule online or call us to book your preferred time slot.</p>
+            </div>
+            <div class="process-step" data-aos="fade-up" data-aos-delay="200">
+                <div class="step-number">2</div>
+                <div class="step-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>Consultation</h3>
+                <p>Discuss your style preferences with your barber.</p>
+            </div>
+            <div class="process-step" data-aos="fade-up" data-aos-delay="300">
+                <div class="step-number">3</div>
+                <div class="step-icon">
+                    <i class="fas fa-cut"></i>
+                </div>
+                <h3>Professional Service</h3>
+                <p>Relax while our experts work their magic.</p>
+            </div>
+            <div class="process-step" data-aos="fade-up" data-aos-delay="400">
+                <div class="step-number">4</div>
+                <div class="step-icon">
+                    <i class="fas fa-smile"></i>
+                </div>
+                <h3>Final Look</h3>
+                <p>Leave with confidence and a fresh style.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Got Questions? We've Got Answers</p>
+        </div>
+        
+        <div class="faq-grid" data-aos="fade-up">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Do I need an appointment?</h3>
+                    <span class="toggle-icon"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>While we do accept walk-ins when possible, we highly recommend booking an appointment to ensure you get your preferred time slot and barber. You can easily book online or call us.</p>
+                    <p>During peak hours (weekends and after 5pm on weekdays), appointments are strongly recommended as wait times can be significant. Our online booking system allows you to see real-time availability and select the barber of your choice.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>How long does a typical haircut take?</h3>
+                    <span class="toggle-icon"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>A standard haircut typically takes 30-45 minutes, depending on the style and complexity. Specialty services like color treatments may take longer.</p>
+                    <p>We recommend allocating about an hour for your visit to ensure ample time for consultation, the service itself, and any styling needs. For first-time clients, we may take a bit longer to understand your preferences and hair type.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>What if I need to cancel my appointment?</h3>
+                    <span class="toggle-icon"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>We appreciate at least 24 hours notice for cancellations. You can cancel through our online booking system or by calling us directly.</p>
+                    <p>For cancellations made with less than 24 hours notice, we reserve the right to charge a cancellation fee of $10 for future bookings. Repeated no-shows may result in requiring a deposit for future appointments. We understand emergencies happen, so please communicate with us if you have an unexpected situation.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Do you offer services for children?</h3>
+                    <span class="toggle-icon"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, we offer haircuts for children of all ages. We have special pricing for kids under 12.</p>
+                    <p>Our barbers are experienced in working with children and creating a comfortable environment for them. We recommend booking children's appointments during less busy hours (weekday mornings or early afternoons) for a more relaxed experience. For very young children or those with sensory sensitivities, please let us know in advance so we can accommodate their needs.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>What methods of payment do you accept?</h3>
+                    <span class="toggle-icon"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>We accept cash, all major credit cards, and mobile payment options like Apple Pay and Google Pay.</p>
+                    <p>We also offer gift cards which can be purchased in-store or online, making them perfect presents for friends and family. For regular clients, we have loyalty programs where you can earn points toward free services or product discounts after a certain number of visits.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Do you sell hair care products?</h3>
+                    <span class="toggle-icon"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, we carry a selection of premium hair care and styling products that our barbers use and recommend.</p>
+                    <p>Our product selection includes high-quality shampoos, conditioners, styling pomades, beard oils, and grooming tools. We only stock products that we believe in and use ourselves. Our barbers are knowledgeable about all products we carry and can provide personalized recommendations based on your hair type, style goals, and maintenance preferences.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Can I request a specific barber?</h3>
+                    <span class="toggle-icon"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>Absolutely! When booking your appointment online or by phone, you can select your preferred barber. Each of our barbers has their own specialties and style, so you can choose the one that best matches your needs.</p>
+                    <p>If you're a new client and unsure which barber to choose, our reception staff can help match you with the best professional based on your style preferences and hair type. We encourage building a relationship with a specific barber for consistency in your haircuts.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>How often should I get a haircut?</h3>
+                    <span class="toggle-icon"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>The frequency of haircuts depends on your hair growth rate and style preference. For most men, we recommend every 3-4 weeks to maintain a clean, polished look, especially for shorter styles. For longer styles, every 6-8 weeks may be sufficient.</p>
+                    <p>Your barber can give you personalized recommendations based on your specific style and growth pattern. We offer reminder services that can notify you when it's time for your next appointment.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-inner" data-aos="fade-up">
+            <h2>Ready to Look Your Best?</h2>
+            <p>Book your appointment now and experience our premium services.</p>
+            <a href="{{ url_for('booking') }}" class="btn btn-light">Book Appointment</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        // Initialize FAQ items
+        $('.faq-question').on('click', function() {
+            $(this).parent().toggleClass('active');
+            
+            // Toggle the icon
+            const icon = $(this).find('.toggle-icon i');
+            if ($(this).parent().hasClass('active')) {
+                icon.removeClass('fa-plus').addClass('fa-minus');
+            } else {
+                icon.removeClass('fa-minus').addClass('fa-plus');
+            }
+        });
+        
+        // Services tabs
+        $('.tabs-nav a').on('click', function(e) {
+            e.preventDefault();
+            const category = $(this).data('category');
+            
+            // Update active tab
+            $('.tabs-nav li').removeClass('active');
+            $(this).parent().addClass('active');
+            
+            // Show/hide services
+            if (category === 'all') {
+                $('.service-card').show();
+            } else {
+                $('.service-card').hide();
+                $('.service-card[data-category="' + category + '"]').show();
+            }
+        });
+    });
+</script>
+{% endblock %} 

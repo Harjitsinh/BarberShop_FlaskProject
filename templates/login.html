@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login | Fama Barber Shop and Beauty Salon{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <h1 data-aos="fade-up">Admin Login</h1>
+        <div class="breadcrumbs" data-aos="fade-up" data-aos-delay="100">
+            <a href="{{ url_for('index') }}">Home</a> / <span>Admin Login</span>
+        </div>
+    </div>
+</section>
+
+<!-- Login Form -->
+<section class="login-section">
+    <div class="container">
+        <div class="login-container" data-aos="fade-up">
+            <div class="login-form-wrapper">
+                <h2>Admin Access</h2>
+                <p>Please enter your credentials to access the admin dashboard.</p>
+                
+                <form action="{{ url_for('login') }}" method="post" class="login-form">
+                    {{ form.csrf_token }}
+                    
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        {{ form.username(class="form-control", placeholder="Enter your username") }}
+                        {% if form.username.errors %}
+                            <div class="form-error">{{ form.username.errors[0] }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        {{ form.password(class="form-control", placeholder="Enter your password") }}
+                        {% if form.password.errors %}
+                            <div class="form-error">{{ form.password.errors[0] }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-submit">
+                        {{ form.submit(class="btn") }}
+                    </div>
+                </form>
+                
+                <div class="login-footer">
+                    <p>Forgot your password? Contact the site administrator.</p>
+                    <p><a href="{{ url_for('index') }}">Return to homepage</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

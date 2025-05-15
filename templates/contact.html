@@ -1,0 +1,493 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us | Fama Barber Shop and Beauty Salon{% endblock %}
+
+{% block styles %}
+<style>
+    .page-header {
+        background-image: linear-gradient(rgba(17, 17, 17, 0.7), rgba(17, 17, 17, 0.7)), url("{{ url_for('static', filename='img/gallery/gallery3.jpg') }}");
+        background-position: center;
+        background-size: cover;
+    }
+    
+    .contact-info-section {
+        padding: 80px 0;
+        background-color: var(--light-color);
+    }
+    
+    .contact-info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 30px;
+        margin-top: 50px;
+    }
+    
+    .contact-info-item {
+        text-align: center;
+        padding: 40px 25px;
+        background-color: #fff;
+        border-radius: 6px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .contact-info-item:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    }
+    
+    .info-icon {
+        width: 70px;
+        height: 70px;
+        background-color: rgba(200, 169, 126, 0.1);
+        color: var(--primary-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+    
+    .contact-info-item h3 {
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+    }
+    
+    .contact-info-item p {
+        color: var(--text-color);
+        margin-bottom: 10px;
+        line-height: 1.5;
+    }
+    
+    .contact-info-item a {
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .contact-info-item a:hover {
+        color: var(--primary-color);
+    }
+    
+    .social-links {
+        display: flex;
+        gap: 15px;
+        margin-top: 15px;
+    }
+    
+    .social-links a {
+        width: 40px;
+        height: 40px;
+        background-color: #f9f9f9;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-color);
+        transition: all 0.3s ease;
+    }
+    
+    .social-links a:hover {
+        background-color: var(--primary-color);
+        color: var(--light-color);
+        transform: translateY(-5px);
+    }
+    
+    .contact-form-section {
+        padding: 100px 0;
+        background-color: #f9f9f9;
+    }
+    
+    .contact-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: 50px;
+    }
+    
+    .contact-form-container {
+        background-color: var(--light-color);
+        padding: 40px;
+        border-radius: 6px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+    }
+    
+    .form-title {
+        margin-bottom: 30px;
+        color: var(--secondary-color);
+    }
+    
+    .contact-form {
+        display: grid;
+        gap: 20px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        font-family: inherit;
+        font-size: 1rem;
+    }
+    
+    .form-control:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(200, 169, 126, 0.2);
+    }
+    
+    .form-submit {
+        margin-top: 20px;
+    }
+    
+    .form-error {
+        color: #dc3545;
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+    
+    .contact-map {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .map-container {
+        flex-grow: 1;
+        border-radius: 6px;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+    }
+    
+    .map-directions {
+        margin-top: 20px;
+        text-align: center;
+    }
+    
+    .faq-section {
+        padding: 80px 0;
+        background-color: var(--light-color);
+    }
+    
+    .faq-grid {
+        max-width: 900px;
+        margin: 40px auto 0;
+    }
+    
+    .faq-item {
+        margin-bottom: 20px;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+    
+    .faq-question {
+        background-color: #fff;
+        padding: 20px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .faq-question h3 {
+        margin: 0;
+        font-size: 1.1rem;
+    }
+    
+    .toggle-icon {
+        color: var(--primary-color);
+        font-size: 1.2rem;
+    }
+    
+    .faq-answer {
+        background-color: #fff;
+        padding: 0 20px;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+    
+    .faq-answer.active {
+        padding: 20px;
+        max-height: 500px;
+    }
+    
+    .form-group-inline {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <h1 data-aos="fade-up">Contact Us</h1>
+        <div class="breadcrumbs" data-aos="fade-up" data-aos-delay="100">
+            <a href="{{ url_for('index') }}">Home</a> / <span>Contact</span>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Info -->
+<section class="contact-info-section">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="section-subtitle">We're Here to Help</p>
+        </div>
+        
+        <div class="contact-info-grid">
+            <div class="contact-info-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="info-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Our Location</h3>
+                <p>500 N Bell Ave #109<br>Denton, TX 76209<br>United States</p>
+                <p><small>Near the University of North Texas</small></p>
+            </div>
+            
+            <div class="contact-info-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="info-icon">
+                    <i class="fas fa-phone-alt"></i>
+                </div>
+                <h3>Call or Text</h3>
+                <p><a href="tel:+19406129127">+1 940-612-9127</a></p>
+                <p><strong>Business Hours:</strong><br>
+                Monday - Friday: 9AM - 7PM<br>
+                Saturday: 9AM - 6PM<br>
+                Sunday: Closed</p>
+            </div>
+            
+            <div class="contact-info-item" data-aos="fade-up" data-aos-delay="300">
+                <div class="info-icon">
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <h3>Email Us</h3>
+                <p><a href="mailto:info@famabarber.com">info@famabarber.com</a></p>
+                <p>For appointments, questions,<br>or special inquiries</p>
+                <p><small>We typically respond within 24 hours</small></p>
+            </div>
+            
+            <div class="contact-info-item" data-aos="fade-up" data-aos-delay="400">
+                <div class="info-icon">
+                    <i class="fas fa-share-alt"></i>
+                </div>
+                <h3>Connect With Us</h3>
+                <p>Follow us on social media for updates, promotions, and style inspiration</p>
+                <div class="social-links">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Yelp"><i class="fab fa-yelp"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Form and Map -->
+<section class="contact-form-section">
+    <div class="container">
+        <div class="contact-grid">
+            <div class="contact-form-container" data-aos="fade-right">
+                <h2 class="form-title">Send Us a Message</h2>
+                <form action="{{ url_for('contact') }}" method="post" class="contact-form">
+                    {{ form.csrf_token }}
+                    <div class="form-group-inline">
+                        <div class="form-group">
+                            <label for="name">Your Name <span class="required">*</span></label>
+                            {{ form.name(class="form-control", placeholder="Enter your full name") }}
+                            {% if form.name.errors %}
+                                <div class="form-error">{{ form.name.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Your Email <span class="required">*</span></label>
+                            {{ form.email(class="form-control", placeholder="Enter your email address") }}
+                            {% if form.email.errors %}
+                                <div class="form-error">{{ form.email.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        {{ form.subject(class="form-control", placeholder="What is this regarding?") }}
+                        {% if form.subject.errors %}
+                            <div class="form-error">{{ form.subject.errors[0] }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message">Message <span class="required">*</span></label>
+                        {{ form.message(class="form-control", rows=6, placeholder="How can we help you? Please provide details about your inquiry...") }}
+                        {% if form.message.errors %}
+                            <div class="form-error">{{ form.message.errors[0] }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="form-submit">
+                        {{ form.submit(class="btn") }}
+                        <p class="form-note"><small>We'll never share your information with third parties.</small></p>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="contact-map" data-aos="fade-left">
+                <div class="map-container">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3345.4259026893623!2d-97.13286648481547!3d33.01607998090631!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x864dca6c46e646e5%3A0xc58b628ef0a40515!2s500%20N%20Bell%20Ave%20%23109%2C%20Denton%2C%20TX%2076209!5e0!3m2!1sen!2sus!4v1636587851372!5m2!1sen!2sus" 
+                        width="100%" 
+                        height="450" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                    </iframe>
+                </div>
+                <div class="map-directions">
+                    <a href="https://maps.google.com/maps?q=500+N+Bell+Ave+%23109,+Denton,+TX+76209" target="_blank" class="btn btn-sm">
+                        <i class="fas fa-directions"></i> Get Directions
+                    </a>
+                    <p class="map-note"><small>Convenient location with ample parking available</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <p class="section-subtitle">Quick Answers to Common Questions</p>
+        </div>
+        
+        <div class="faq-grid" data-aos="fade-up">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Do I need to book an appointment?</h3>
+                    <span class="toggle-icon"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>While we accept walk-ins when possible, we recommend booking an appointment to ensure you get your preferred time slot and barber. You can easily book online through our website or call us directly at +1 940-612-9127.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>What are your busiest times?</h3>
+                    <span class="toggle-icon"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>Weekends and evenings after 5 PM tend to be our busiest times. For a more relaxed experience, consider booking during weekday mornings or early afternoons. Thursday and Friday evenings are particularly busy, so we recommend booking these slots well in advance.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Is there parking available?</h3>
+                    <span class="toggle-icon"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, we have free parking available in front of our shop and additional parking in the surrounding area. The lot is well-lit and monitored for your safety. Street parking is also available on Bell Avenue with no time restrictions during our business hours.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Do you offer gift cards?</h3>
+                    <span class="toggle-icon"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, we offer gift cards for all our services. They can be purchased in-store or by calling us at +1 940-612-9127. Gift cards make perfect presents for birthdays, holidays, or special occasions. They are available in any denomination and never expire.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>What forms of payment do you accept?</h3>
+                    <span class="toggle-icon"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>We accept all major credit cards (Visa, MasterCard, American Express, Discover), cash, and mobile payment options including Apple Pay and Google Pay. We also offer contactless payment for your convenience and safety.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Do you offer student discounts?</h3>
+                    <span class="toggle-icon"><i class="fas fa-plus"></i></span>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, we offer a 10% discount to students with a valid student ID. This discount applies to regular haircuts and beard trims and is available Monday through Thursday. Please mention your student status when booking and present your ID upon arrival.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-inner" data-aos="fade-up">
+            <h2>Ready for a Fresh Look?</h2>
+            <p>Book your appointment today and experience exceptional service.</p>
+            <a href="{{ url_for('booking') }}" class="btn btn-light">Book Appointment</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        // FAQ toggle
+        $('.faq-question').on('click', function() {
+            var answer = $(this).next('.faq-answer');
+            
+            // Close all other answers
+            $('.faq-answer').not(answer).slideUp();
+            $('.faq-question').not($(this)).find('.toggle-icon i').removeClass('fa-minus').addClass('fa-plus');
+            
+            // Toggle this answer
+            answer.slideToggle();
+            $(this).find('.toggle-icon i').toggleClass('fa-plus fa-minus');
+        });
+        
+        // Animate info items on hover
+        $('.contact-info-item').hover(function() {
+            $(this).find('.info-icon').css('transform', 'scale(1.1) rotate(10deg)');
+        }, function() {
+            $(this).find('.info-icon').css('transform', 'scale(1) rotate(0deg)');
+        });
+        
+        // Add smooth transition to info icons
+        $('.info-icon').css('transition', 'all 0.3s ease');
+        
+        // Hide all answers initially
+        $('.faq-answer').hide();
+    });
+</script>
+{% endblock %} 

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Fama Barber Shop and Beauty Salon | Style That Defines You{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="container">
+        <h1 data-aos="fade-up">Welcome to Fama Barber Shop</h1>
+        <p data-aos="fade-up" data-aos-delay="100">Style That Defines You</p>
+        <div class="hero-buttons" data-aos="fade-up" data-aos-delay="200">
+            <a href="{{ url_for('booking') }}" class="btn">Book Appointment</a>
+            <a href="{{ url_for('services') }}" class="btn btn-outline">Our Services</a>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="about">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Premium Barber Experience</h2>
+        <div class="about-content">
+            <p data-aos="fade-up" data-aos-delay="100">At Fama Barber Shop, we bring together skilled professionals, premium products, and a relaxing atmosphere to give you the ultimate grooming experience.</p>
+            <p data-aos="fade-up" data-aos-delay="200">Since our establishment, we've been dedicated to providing top-notch services to our valued clients in Denton, TX.</p>
+            <div class="rating" data-aos="fade-up" data-aos-delay="300">
+                <span class="stars">★★★★★</span>
+                <span class="rating-text">4.6/5 from over 116 happy clients</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Services Section -->
+<section class="services">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Our Services</h2>
+        <div class="services-grid">
+            <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="service-icon">
+                    <img src="{{ url_for('static', filename='img/hair-icon.svg') }}" alt="Haircut Icon">
+                </div>
+                <h3>Men's Haircut</h3>
+                <p>Classic haircut with styling</p>
+                <p class="price">$25.00</p>
+                <a href="{{ url_for('booking') }}" class="btn">Book Now</a>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="service-icon">
+                    <img src="{{ url_for('static', filename='img/beard-icon.svg') }}" alt="Beard Icon">
+                </div>
+                <h3>Beard Trim</h3>
+                <p>Shape and trim your beard</p>
+                <p class="price">$15.00</p>
+                <a href="{{ url_for('booking') }}" class="btn">Book Now</a>
+            </div>
+            <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+                <div class="service-icon">
+                    <img src="{{ url_for('static', filename='img/beard-icon.svg') }}" alt="Shave Icon">
+                </div>
+                <h3>Hot Towel Shave</h3>
+                <p>Traditional straight razor shave</p>
+                <p class="price">$35.00</p>
+                <a href="{{ url_for('booking') }}" class="btn">Book Now</a>
+            </div>
+        </div>
+        <div class="view-all" data-aos="fade-up" data-aos-delay="400">
+            <a href="{{ url_for('services') }}" class="btn">View All Services</a>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="team">
+    <div class="container">
+        <h2 class="section-title" data-aos="fade-up">Our Expert Barbers</h2>
+        <div class="team-grid">
+            <div class="team-member" data-aos="fade-up" data-aos-delay="100">
+                <div class="team-img">
+                    <img src="{{ url_for('static', filename='img/team/barber1.jpg') }}" alt="Barber">
+                </div>
+                <h3>James Wilson</h3>
+                <p class="role">Master Barber</p>
+                <p>5+ years of professional experience specializing in classic cuts and precision fades.</p>
+            </div>
+            <div class="team-member" data-aos="fade-up" data-aos-delay="200">
+                <div class="team-img">
+                    <img src="{{ url_for('static', filename='img/team/barber2.jpg') }}" alt="Barber">
+                </div>
+                <h3>Robert Johnson</h3>
+                <p class="role">Senior Stylist</p>
+                <p>Award-winning stylist with expertise in modern trends and beard grooming.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %} 

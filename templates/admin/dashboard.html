@@ -1,0 +1,197 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Admin Dashboard | Fama Barber Shop and Beauty Salon{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <div class="dashboard-header">
+        <h1>Admin Dashboard</h1>
+        <p>Welcome back, {{ current_user.username }}!</p>
+    </div>
+    
+    <div class="dashboard-stats">
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="stat-content">
+                <h3>Today's Appointments</h3>
+                <div class="stat-number">{{ appointments|selectattr('date', 'equalto', now.date())|list|length }}</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-envelope"></i>
+            </div>
+            <div class="stat-content">
+                <h3>Unread Messages</h3>
+                <div class="stat-number">{{ messages|length }}</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-comment"></i>
+            </div>
+            <div class="stat-content">
+                <h3>Pending Reviews</h3>
+                <div class="stat-number">{{ pending_testimonials|length }}</div>
+            </div>
+        </div>
+        
+        <div class="stat-card">
+            <div class="stat-icon">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="stat-content">
+                <h3>Upcoming Appointments</h3>
+                <div class="stat-number">{{ appointments|selectattr('date', 'ge', now.date())|list|length }}</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="dashboard-content">
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h2>Recent Appointments</h2>
+                <a href="{{ url_for('admin_appointments') }}" class="btn btn-sm">View All</a>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Client</th>
+                            <th>Service</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                        <tr>
+                            <td>{{ appointment.date.strftime('%m/%d/%Y') }}</td>
+                            <td>{{ appointment.time.strftime('%I:%M %p') }}</td>
+                            <td>{{ appointment.name }}</td>
+                            <td>{{ appointment.service.name }}</td>
+                            <td><span class="status-badge status-{{ appointment.status }}">{{ appointment.status|capitalize }}</span></td>
+                            <td>
+                                <div class="action-buttons">
+                                    <form action="{{ url_for('update_appointment', id=appointment.id) }}" method="post" class="inline-form">
+                                        <select name="status" class="status-select" onchange="this.form.submit()">
+                                            <option value="pending" {% if appointment.status == 'pending' %}selected{% endif %}>Pending</option>
+                                            <option value="confirmed" {% if appointment.status == 'confirmed' %}selected{% endif %}>Confirm</option>
+                                            <option value="canceled" {% if appointment.status == 'canceled' %}selected{% endif %}>Cancel</option>
+                                        </select>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" class="text-center">No appointments found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h2>Recent Messages</h2>
+                <a href="{{ url_for('admin_messages') }}" class="btn btn-sm">View All</a>
+            </div>
+            
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>From</th>
+                            <th>Subject</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for message in messages %}
+                        <tr {% if not message.read %}class="unread"{% endif %}>
+                            <td>{{ message.created_at.strftime('%m/%d/%Y') }}</td>
+                            <td>{{ message.name }}</td>
+                            <td>{{ message.subject or 'No Subject' }}</td>
+                            <td>{{ 'Unread' if not message.read else 'Read' }}</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="{{ url_for('view_message', id=message.id) }}" class="btn btn-icon" title="View Message">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <form action="{{ url_for('delete_message', id=message.id) }}" method="post" class="inline-form" onsubmit="return confirm('Are you sure you want to delete this message?')">
+                                        <button type="submit" class="btn btn-icon btn-danger" title="Delete Message">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center">No messages found</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h2>Pending Reviews</h2>
+                <a href="{{ url_for('admin_testimonials') }}" class="btn btn-sm">View All</a>
+            </div>
+            
+            <div class="testimonials-grid">
+                {% for testimonial in pending_testimonials %}
+                <div class="testimonial-card">
+                    <div class="testimonial-header">
+                        <div class="testimonial-info">
+                            <h3>{{ testimonial.name }}</h3>
+                            <div class="testimonial-date">{{ testimonial.date.strftime('%m/%d/%Y') }}</div>
+                        </div>
+                        <div class="testimonial-rating">
+                            {% for i in range(1, 6) %}
+                                {% if i <= testimonial.rating %}
+                                    <i class="fas fa-star"></i>
+                                {% else %}
+                                    <i class="far fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="testimonial-content">
+                        <p>"{{ testimonial.comment }}"</p>
+                    </div>
+                    
+                    <div class="testimonial-actions">
+                        <form action="{{ url_for('approve_testimonial', id=testimonial.id) }}" method="post" class="inline-form">
+                            <button type="submit" class="btn btn-sm btn-success">Approve</button>
+                        </form>
+                        <form action="{{ url_for('delete_testimonial', id=testimonial.id) }}" method="post" class="inline-form" onsubmit="return confirm('Are you sure you want to delete this review?')">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <p>No pending reviews to moderate</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

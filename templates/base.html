@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Fama Barber Shop{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='img/favicon.ico') }}" type="image/x-icon">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation Library -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+    
+    <!-- Main CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="container">
+            <div class="header-inner">
+                <div class="logo">
+                    <a href="{{ url_for('index') }}">
+                        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Fama Barber Shop Logo">
+                    </a>
+                </div>
+                
+                <div class="mobile-nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="{{ url_for('index') }}" class="{% if request.path == url_for('index') %}active{% endif %}">Home</a></li>
+                        <li><a href="{{ url_for('about') }}" class="{% if request.path == url_for('about') %}active{% endif %}">About</a></li>
+                        <li><a href="{{ url_for('services') }}" class="{% if request.path == url_for('services') %}active{% endif %}">Services</a></li>
+                        <li><a href="{{ url_for('gallery') }}" class="{% if request.path == url_for('gallery') %}active{% endif %}">Gallery</a></li>
+                        <li><a href="{{ url_for('testimonials') }}" class="{% if request.path == url_for('testimonials') %}active{% endif %}">Testimonials</a></li>
+                        <li><a href="{{ url_for('contact') }}" class="{% if request.path == url_for('contact') %}active{% endif %}">Contact</a></li>
+                    </ul>
+                </nav>
+                
+                <a href="{{ url_for('booking') }}" class="btn book-btn">Book Now</a>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main>
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for message in messages %}
+                        <div class="flash-message">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </main>
+    
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>Fama Barber Shop</h3>
+                    <p>500 N Bell Ave #109<br>Denton, TX 76209</p>
+                    <p>Phone: +1 940-612-9127</p>
+                    <p>Email: info@famabarber.com</p>
+                </div>
+                
+                <div class="footer-hours">
+                    <h3>Hours</h3>
+                    <p>Monday - Friday: 9am - 7pm</p>
+                    <p>Saturday: 9am - 6pm</p>
+                    <p>Sunday: 10am - 4pm</p>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{{ url_for('about') }}">About Us</a></li>
+                        <li><a href="{{ url_for('services') }}">Services</a></li>
+                        <li><a href="{{ url_for('gallery') }}">Gallery</a></li>
+                        <li><a href="{{ url_for('booking') }}">Book Appointment</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-social">
+                    <h3>Follow Us</h3>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-yelp"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Fama Barber Shop and Beauty Salon. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- AOS Animation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    
+    <!-- Main JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
+    <script>
+        // Initialize AOS animations
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: true
+        });
+    </script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html> 

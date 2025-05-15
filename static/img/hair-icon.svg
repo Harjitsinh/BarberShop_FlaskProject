@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background Circle -->
+  <circle cx="32" cy="32" r="32" fill="#00968833" />
+  
+  <!-- Hair Strand -->
+  <path d="M32 12C32 12 26 20 26 32C26 44 32 52 32 52" stroke="#333333" stroke-width="2" stroke-linecap="round" />
+  <path d="M38 16C38 16 32 24 32 36C32 48 38 52 38 52" stroke="#333333" stroke-width="2" stroke-linecap="round" />
+  
+  <!-- Scissors -->
+  <g transform="translate(14, 20) scale(0.6) rotate(-15)">
+    <path d="M14.5 14.5L25 25M14.5 14.5L4 4M14.5 14.5L4 25M14.5 14.5L25 4" stroke="#009688" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="7" cy="7" r="3" fill="#009688" />
+    <circle cx="7" cy="22" r="3" fill="#009688" />
+    <circle cx="22" cy="7" r="3" fill="#009688" />
+    <circle cx="22" cy="22" r="3" fill="#009688" />
+  </g>
+  
+  <!-- Comb -->
+  <g transform="translate(32, 34) rotate(45)">
+    <rect x="0" y="0" width="16" height="5" rx="1" fill="#333333" />
+    <rect x="1" y="5" width="1" height="4" rx="0.5" fill="#333333" />
+    <rect x="3" y="5" width="1" height="4" rx="0.5" fill="#333333" />
+    <rect x="5" y="5" width="1" height="4" rx="0.5" fill="#333333" />
+    <rect x="7" y="5" width="1" height="4" rx="0.5" fill="#333333" />
+    <rect x="9" y="5" width="1" height="4" rx="0.5" fill="#333333" />
+    <rect x="11" y="5" width="1" height="4" rx="0.5" fill="#333333" />
+    <rect x="13" y="5" width="1" height="4" rx="0.5" fill="#333333" />
+    <rect x="15" y="5" width="1" height="4" rx="0.5" fill="#333333" />
+  </g>
+</svg> 

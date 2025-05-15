@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Dashboard | Fama Barber Shop and Beauty Salon{% endblock %}</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
+    
+    <!-- Admin CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    
+    <!-- Page-specific CSS -->
+    {% block styles %}{% endblock %}
+</head>
+<body>
+    <div class="admin-wrapper">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <a href="{{ url_for('admin_dashboard') }}">
+                        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Fama Barber Shop">
+                    </a>
+                </div>
+                <div class="sidebar-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+            
+            <div class="admin-nav">
+                <ul>
+                    <li class="{% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+                        <a href="{{ url_for('admin_dashboard') }}">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="{% if request.endpoint == 'admin_appointments' %}active{% endif %}">
+                        <a href="{{ url_for('admin_appointments') }}">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Appointments</span>
+                        </a>
+                    </li>
+                    <li class="{% if request.endpoint == 'admin_services' or request.endpoint == 'edit_service' %}active{% endif %}">
+                        <a href="{{ url_for('admin_services') }}">
+                            <i class="fas fa-cut"></i>
+                            <span>Services</span>
+                        </a>
+                    </li>
+                    <li class="{% if request.endpoint == 'admin_gallery' %}active{% endif %}">
+                        <a href="{{ url_for('admin_gallery') }}">
+                            <i class="fas fa-images"></i>
+                            <span>Gallery</span>
+                        </a>
+                    </li>
+                    <li class="{% if request.endpoint == 'admin_testimonials' %}active{% endif %}">
+                        <a href="{{ url_for('admin_testimonials') }}">
+                            <i class="fas fa-comment"></i>
+                            <span>Reviews</span>
+                        </a>
+                    </li>
+                    <li class="{% if request.endpoint == 'admin_messages' or request.endpoint == 'view_message' %}active{% endif %}">
+                        <a href="{{ url_for('admin_messages') }}">
+                            <i class="fas fa-envelope"></i>
+                            <span>Messages</span>
+                            {% if unread_messages_count > 0 %}
+                                <span class="badge">{{ unread_messages_count }}</span>
+                            {% endif %}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="sidebar-footer">
+                <ul>
+                    <li>
+                        <a href="{{ url_for('index') }}" target="_blank">
+                            <i class="fas fa-globe"></i>
+                            <span>View Site</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('logout') }}">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Topbar -->
+            <header class="admin-topbar">
+                <div class="topbar-left">
+                    <div class="page-title">
+                        {% block page_title %}Admin Dashboard{% endblock %}
+                    </div>
+                </div>
+                
+                <div class="topbar-right">
+                    <div class="user-dropdown">
+                        <div class="user-info">
+                            <span class="user-name">{{ current_user.username }}</span>
+                            <span class="user-role">Administrator</span>
+                        </div>
+                        <div class="user-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <div class="flash-messages">
+                        {% for message in messages %}
+                            <div class="flash-message">{{ message }}</div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            
+            <!-- Content Area -->
+            <div class="content-area">
+                {% block content %}{% endblock %}
+            </div>
+            
+            <!-- Footer -->
+            <footer class="admin-footer">
+                <p>&copy; {{ now.year }} Fama Barber Shop and Beauty Salon. All rights reserved.</p>
+            </footer>
+        </main>
+    </div>
+    
+    <!-- JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+    
+    <!-- Page-specific scripts -->
+    {% block scripts %}{% endblock %}
+    
+    <script>
+        $(document).ready(function() {
+            // Sidebar toggle
+            $('#sidebar-toggle').on('click', function() {
+                $('.admin-wrapper').toggleClass('sidebar-collapsed');
+            });
+            
+            // Auto-hide flash messages after 5 seconds
+            setTimeout(function() {
+                $('.flash-message').fadeOut('slow');
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

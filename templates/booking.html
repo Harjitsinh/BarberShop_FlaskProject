@@ -1,0 +1,810 @@
+{% extends "base.html" %}
+
+{% block title %}Book Appointment | Fama Barber Shop and Beauty Salon{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+<style>
+    .page-header {
+        background-image: linear-gradient(rgba(17, 17, 17, 0.7), rgba(17, 17, 17, 0.7)), url("{{ url_for('static', filename='img/gallery/gallery3.jpg') }}");
+        background-position: center;
+        background-size: cover;
+    }
+    
+    .booking-intro {
+        padding: 80px 0 40px;
+        background-color: var(--light-color);
+    }
+    
+    .booking-steps {
+        padding: 0 0 50px;
+        background-color: var(--light-color);
+    }
+    
+    .steps-container {
+        display: flex;
+        justify-content: space-between;
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+    }
+    
+    .steps-container::before {
+        content: '';
+        position: absolute;
+        top: 25px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background-color: rgba(0,0,0,0.1);
+        z-index: 1;
+    }
+    
+    .step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+    }
+    
+    .step-number {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #f1f1f1;
+        color: var(--text-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+    
+    .step.active .step-number,
+    .step.completed .step-number {
+        background-color: var(--primary-color);
+        color: var(--light-color);
+    }
+    
+    .step.completed .step-number {
+        background-color: var(--secondary-color);
+    }
+    
+    .step-label {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        transition: all 0.3s ease;
+    }
+    
+    .step.active .step-label,
+    .step.completed .step-label {
+        color: var(--text-color);
+        font-weight: 600;
+    }
+    
+    .booking-form-section {
+        padding: 70px 0;
+        background-color: #f9f9f9;
+    }
+    
+    .booking-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: var(--light-color);
+        border-radius: 6px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+        padding: 40px;
+    }
+    
+    .form-step {
+        margin-bottom: 30px;
+    }
+    
+    .form-step h3 {
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .service-selection {
+        margin-bottom: 30px;
+    }
+    
+    .service-select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 4px;
+        font-size: 1rem;
+        color: var(--text-color);
+    }
+    
+    .date-time-selection {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .form-group {
+        margin-bottom: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        font-family: inherit;
+        font-size: 1rem;
+    }
+    
+    .form-control:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(200, 169, 126, 0.2);
+    }
+    
+    .form-error {
+        color: #dc3545;
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+    
+    .step-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+    }
+    
+    .btn-outline {
+        background-color: transparent;
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+    }
+    
+    .btn-outline:hover {
+        background-color: var(--primary-color);
+        color: var(--light-color);
+    }
+    
+    .booking-summary {
+        background-color: #f9f9f9;
+        border-radius: 4px;
+        padding: 25px;
+        margin-bottom: 30px;
+    }
+    
+    .summary-item {
+        margin-bottom: 12px;
+        display: flex;
+    }
+    
+    .summary-label {
+        font-weight: 600;
+        width: 100px;
+        color: var(--text-muted);
+    }
+    
+    .summary-value {
+        flex: 1;
+    }
+    
+    .confirmation-note {
+        margin-bottom: 30px;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+    
+    .confirmation-note a {
+        color: var(--primary-color);
+        text-decoration: none;
+    }
+    
+    .booking-policies {
+        padding: 80px 0;
+        background-color: var(--light-color);
+    }
+    
+    .policies-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+    
+    .policy-item {
+        margin-bottom: 30px;
+        background-color: #f9f9f9;
+        border-radius: 6px;
+        padding: 25px;
+        transition: all 0.3s ease;
+    }
+    
+    .policy-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    
+    .policy-item h3 {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        color: var(--secondary-color);
+    }
+    
+    .policy-item h3 i {
+        margin-right: 10px;
+        color: var(--primary-color);
+    }
+    
+    .time-slot-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+        margin-top: 15px;
+    }
+    
+    .time-slot {
+        padding: 10px;
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 4px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .time-slot:hover {
+        border-color: var(--primary-color);
+    }
+    
+    .time-slot.selected {
+        background-color: var(--primary-color);
+        color: var(--light-color);
+        border-color: var(--primary-color);
+    }
+    
+    .time-slot.unavailable {
+        background-color: #f1f1f1;
+        color: var(--text-muted);
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+    
+    .service-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .service-card {
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 6px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .service-card:hover {
+        border-color: var(--primary-color);
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+    
+    .service-card.selected {
+        background-color: rgba(200, 169, 126, 0.1);
+        border-color: var(--primary-color);
+    }
+    
+    .service-icon {
+        font-size: 2rem;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+    }
+    
+    .service-name {
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+    
+    .service-price {
+        color: var(--primary-color);
+        font-weight: 700;
+    }
+    
+    .service-duration {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        margin-top: 5px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <h1 data-aos="fade-up">Book an Appointment</h1>
+        <div class="breadcrumbs" data-aos="fade-up" data-aos-delay="100">
+            <a href="{{ url_for('index') }}">Home</a> / <span>Book Appointment</span>
+        </div>
+    </div>
+</section>
+
+<!-- Booking Intro -->
+<section class="booking-intro">
+    <div class="container">
+        <div class="intro-content text-center" data-aos="fade-up">
+            <h2 class="section-title">Schedule Your Visit</h2>
+            <p>Book your appointment at Fama Barber Shop and Beauty Salon. Choose your preferred service, date, and time for a personalized grooming experience tailored to your needs.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Booking Steps -->
+<section class="booking-steps">
+    <div class="container">
+        <div class="steps-container" data-aos="fade-up">
+            <div class="step active" data-step="1">
+                <div class="step-number">1</div>
+                <div class="step-label">Choose Service</div>
+            </div>
+            <div class="step" data-step="2">
+                <div class="step-number">2</div>
+                <div class="step-label">Select Date & Time</div>
+            </div>
+            <div class="step" data-step="3">
+                <div class="step-number">3</div>
+                <div class="step-label">Your Information</div>
+            </div>
+            <div class="step" data-step="4">
+                <div class="step-number">4</div>
+                <div class="step-label">Confirmation</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Booking Form -->
+<section class="booking-form-section">
+    <div class="container">
+        <div class="booking-container" data-aos="fade-up">
+            <form action="{{ url_for('booking') }}" method="post" class="booking-form" id="booking-form">
+                {{ form.csrf_token }}
+                
+                <!-- Step 1: Choose Service -->
+                <div class="form-step" id="step-1">
+                    <h3>Select a Service</h3>
+                    <div class="service-selection">
+                        <div class="service-cards">
+                            <!-- The service cards will be dynamically generated via JavaScript -->
+                        </div>
+                        {{ form.service(class="service-select", style="display: none;") }}
+                        {% if form.service.errors %}
+                            <div class="form-error">{{ form.service.errors[0] }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="step-buttons">
+                        <button type="button" class="btn next-step" data-next="2" id="service-continue">Continue</button>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Select Date & Time -->
+                <div class="form-step" id="step-2" style="display: none;">
+                    <h3>Choose Date & Time</h3>
+                    <div class="date-time-selection">
+                        <div class="form-group">
+                            <label for="date">Select Date</label>
+                            {{ form.date(class="date-picker", placeholder="Choose a date") }}
+                            {% if form.date.errors %}
+                                <div class="form-error">{{ form.date.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="time">Select Time</label>
+                            <div class="time-slot-container">
+                                {{ form.time(class="time-select", style="display: none;") }}
+                                <div class="time-slot-grid">
+                                    <!-- Time slots will be populated dynamically -->
+                                    <div class="select-date-prompt">Please select a date first</div>
+                                </div>
+                            </div>
+                            {% if form.time.errors %}
+                                <div class="form-error">{{ form.time.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="step-buttons">
+                        <button type="button" class="btn btn-outline prev-step" data-prev="1">Back</button>
+                        <button type="button" class="btn next-step" data-next="3" id="datetime-continue">Continue</button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Personal Information -->
+                <div class="form-step" id="step-3" style="display: none;">
+                    <h3>Your Information</h3>
+                    <div class="personal-info">
+                        <div class="form-group">
+                            <label for="name">Your Name</label>
+                            {{ form.name(class="form-control", placeholder="Enter your full name") }}
+                            {% if form.name.errors %}
+                                <div class="form-error">{{ form.name.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            {{ form.email(class="form-control", placeholder="Enter your email") }}
+                            {% if form.email.errors %}
+                                <div class="form-error">{{ form.email.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            {{ form.phone(class="form-control", placeholder="Enter your phone number") }}
+                            {% if form.phone.errors %}
+                                <div class="form-error">{{ form.phone.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="notes">Special Requests (Optional)</label>
+                            {{ form.notes(class="form-control", placeholder="Any special requests or notes for your stylist?") }}
+                            {% if form.notes.errors %}
+                                <div class="form-error">{{ form.notes.errors[0] }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="step-buttons">
+                        <button type="button" class="btn btn-outline prev-step" data-prev="2">Back</button>
+                        <button type="button" class="btn next-step" data-next="4" id="info-continue">Review & Confirm</button>
+                    </div>
+                </div>
+                
+                <!-- Step 4: Confirmation -->
+                <div class="form-step" id="step-4" style="display: none;">
+                    <h3>Review Your Appointment</h3>
+                    <div class="booking-summary">
+                        <div class="summary-item">
+                            <span class="summary-label">Service:</span>
+                            <span class="summary-value" id="summary-service"></span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Date:</span>
+                            <span class="summary-value" id="summary-date"></span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Time:</span>
+                            <span class="summary-value" id="summary-time"></span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Name:</span>
+                            <span class="summary-value" id="summary-name"></span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="summary-label">Contact:</span>
+                            <span class="summary-value" id="summary-contact"></span>
+                        </div>
+                        <div class="summary-item" id="notes-container" style="display: none;">
+                            <span class="summary-label">Notes:</span>
+                            <span class="summary-value" id="summary-notes"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="confirmation-note">
+                        <p>By clicking "Confirm Booking", you agree to our <a href="#">Cancellation Policy</a>. Please provide at least 24 hours notice for cancellations.</p>
+                    </div>
+                    
+                    <div class="step-buttons">
+                        <button type="button" class="btn btn-outline prev-step" data-prev="3">Back</button>
+                        {{ form.submit(class="btn") }}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Booking Policies -->
+<section class="booking-policies">
+    <div class="container">
+        <div class="policies-container" data-aos="fade-up">
+            <h2 class="section-title">Booking Policies</h2>
+            
+            <div class="policy-item">
+                <h3><i class="fas fa-clock"></i> Cancellation Policy</h3>
+                <p>We kindly request at least 24 hours notice for cancellations. Late cancellations or no-shows may be subject to a fee of $10. We understand that emergencies happen, so please contact us as soon as possible if you need to reschedule.</p>
+            </div>
+            
+            <div class="policy-item">
+                <h3><i class="fas fa-walking"></i> Late Arrivals</h3>
+                <p>Please arrive 5-10 minutes before your scheduled appointment time. If you're running late, please call us at +1 940-612-9127. Appointments may need to be rescheduled if arrival is more than 15 minutes after the scheduled time to ensure we can provide the quality of service you deserve.</p>
+            </div>
+            
+            <div class="policy-item">
+                <h3><i class="fas fa-calendar-check"></i> Rebooking</h3>
+                <p>We recommend booking your next appointment before leaving to ensure you get your preferred time and stylist. Most of our clients book appointments 2-3 weeks in advance. For regular maintenance, we can set up recurring appointments for your convenience.</p>
+            </div>
+            
+            <div class="policy-item">
+                <h3><i class="fas fa-child"></i> Children's Appointments</h3>
+                <p>For children under 12, we recommend booking appointments during weekday morning or early afternoon hours when the shop is less busy. A parent or guardian must be present for the entire appointment for clients under 18 years of age.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-inner" data-aos="fade-up">
+            <h2>Need Help?</h2>
+            <p>Call us directly if you have any questions about booking or services.</p>
+            <a href="tel:+19406129127" class="btn btn-light"><i class="fas fa-phone-alt"></i> +1 940-612-9127</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Initialize date picker
+        var datePicker = $(".date-picker").flatpickr({
+            minDate: "today",
+            disable: [
+                function(date) {
+                    // Disable Sundays (0 = Sunday)
+                    return date.getDay() === 0;
+                }
+            ],
+            onChange: function(selectedDates, dateStr, instance) {
+                // Get available time slots for selected date
+                if (selectedDates.length > 0) {
+                    fetchAvailableTimeSlots(dateStr);
+                }
+            }
+        });
+        
+        // Function to fetch available time slots via AJAX
+        function fetchAvailableTimeSlots(date) {
+            // Show loading indicator for time select
+            $('.time-slot-grid').html('<div class="loading">Loading available times...</div>');
+            
+            // AJAX request to get available slots
+            $.ajax({
+                url: '/api/check-availability',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ date: date }),
+                success: function(response) {
+                    // Populate time slots grid
+                    populateTimeSlots(response.available_slots);
+                },
+                error: function() {
+                    // Error handling
+                    $('.time-slot-grid').html('<div class="error">Error loading time slots. Please try again.</div>');
+                }
+            });
+        }
+        
+        // Function to populate time slots grid
+        function populateTimeSlots(slots) {
+            var timeSlotGrid = $('.time-slot-grid');
+            timeSlotGrid.empty();
+            
+            if (slots.length === 0) {
+                timeSlotGrid.html('<div class="no-slots">No available slots for this date. Please select another date.</div>');
+                return;
+            }
+            
+            // Create time slot elements
+            slots.forEach(function(slot) {
+                // Convert 24h format to 12h for display
+                var displayTime = convert24To12Hour(slot);
+                
+                var timeSlot = $('<div class="time-slot" data-value="' + slot + '">' + displayTime + '</div>');
+                timeSlotGrid.append(timeSlot);
+            });
+            
+            // Time slot click handler
+            $('.time-slot').on('click', function() {
+                // Deselect all slots
+                $('.time-slot').removeClass('selected');
+                // Select current slot
+                $(this).addClass('selected');
+                // Update hidden select
+                $('.time-select').val($(this).data('value'));
+            });
+        }
+        
+        // Function to convert 24h time format to 12h
+        function convert24To12Hour(time24h) {
+            var [hours, minutes] = time24h.split(':');
+            var period = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12; // Convert 0 to 12 for 12 AM
+            return hours + ':' + minutes + ' ' + period;
+        }
+        
+        // Generate service cards
+        function generateServiceCards() {
+            var serviceSelect = $('.service-select');
+            var serviceCards = $('.service-cards');
+            
+            // Get options from select
+            serviceSelect.find('option').each(function() {
+                if ($(this).val()) { // Skip empty option
+                    var optionText = $(this).text();
+                    var matches = optionText.match(/(.*) - \$([\d.]+)/); // Parse service name and price
+                    
+                    if (matches) {
+                        var name = matches[1];
+                        var price = matches[2];
+                        var serviceId = $(this).val();
+                        
+                        // Create card with appropriate icon based on service name
+                        var iconClass = 'fa-cut'; // Default icon
+                        
+                        if (name.toLowerCase().includes('beard')) {
+                            iconClass = 'fa-toilet-paper';
+                        } else if (name.toLowerCase().includes('shave')) {
+                            iconClass = 'fa-razor';
+                        } else if (name.toLowerCase().includes('color')) {
+                            iconClass = 'fa-paint-brush';
+                        } else if (name.toLowerCase().includes('package') || name.toLowerCase().includes('vip')) {
+                            iconClass = 'fa-gem';
+                        }
+                        
+                        var card = $('<div class="service-card" data-service-id="' + serviceId + '">' +
+                                    '<div class="service-icon"><i class="fas ' + iconClass + '"></i></div>' +
+                                    '<div class="service-name">' + name + '</div>' +
+                                    '<div class="service-price">$' + price + '</div>' +
+                                    '</div>');
+                        
+                        serviceCards.append(card);
+                    }
+                }
+            });
+            
+            // Service card click handler
+            $('.service-card').on('click', function() {
+                $('.service-card').removeClass('selected');
+                $(this).addClass('selected');
+                serviceSelect.val($(this).data('service-id'));
+            });
+        }
+        
+        // Navigation between steps
+        $('.next-step').on('click', function() {
+            var currentStep = $(this).closest('.form-step');
+            var nextStepNum = $(this).data('next');
+            var isValid = validateStep(currentStep.attr('id'));
+            
+            if (isValid) {
+                currentStep.hide();
+                $('#step-' + nextStepNum).show();
+                
+                // Update step indicators
+                $('.step').removeClass('active');
+                $('.step[data-step="' + nextStepNum + '"]').addClass('active');
+                
+                // Mark previous steps as completed
+                for (var i = 1; i < nextStepNum; i++) {
+                    $('.step[data-step="' + i + '"]').addClass('completed');
+                }
+                
+                // If moving to confirmation step, update summary
+                if (nextStepNum === 4) {
+                    updateSummary();
+                }
+            }
+        });
+        
+        $('.prev-step').on('click', function() {
+            var currentStep = $(this).closest('.form-step');
+            var prevStepNum = $(this).data('prev');
+            
+            currentStep.hide();
+            $('#step-' + prevStepNum).show();
+            
+            // Update step indicators
+            $('.step').removeClass('active');
+            $('.step[data-step="' + prevStepNum + '"]').addClass('active');
+        });
+        
+        // Validate each step
+        function validateStep(stepId) {
+            switch(stepId) {
+                case 'step-1':
+                    if (!$('.service-select').val()) {
+                        alert('Please select a service to continue.');
+                        return false;
+                    }
+                    return true;
+                    
+                case 'step-2':
+                    if (!$('.date-picker').val()) {
+                        alert('Please select a date to continue.');
+                        return false;
+                    }
+                    if (!$('.time-select').val()) {
+                        alert('Please select a time slot to continue.');
+                        return false;
+                    }
+                    return true;
+                    
+                case 'step-3':
+                    if (!$('#name').val()) {
+                        alert('Please enter your name to continue.');
+                        return false;
+                    }
+                    if (!$('#email').val()) {
+                        alert('Please enter your email to continue.');
+                        return false;
+                    }
+                    if (!$('#phone').val()) {
+                        alert('Please enter your phone number to continue.');
+                        return false;
+                    }
+                    return true;
+                    
+                default:
+                    return true;
+            }
+        }
+        
+        // Update summary in confirmation step
+        function updateSummary() {
+            // Get selected service text
+            var serviceText = $('.service-select option:selected').text();
+            $('#summary-service').text(serviceText);
+            
+            // Format date
+            var dateValue = $('.date-picker').val();
+            var formattedDate = new Date(dateValue).toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            $('#summary-date').text(formattedDate);
+            
+            // Get time
+            var timeValue = $('.time-select').val();
+            var displayTime = convert24To12Hour(timeValue);
+            $('#summary-time').text(displayTime);
+            
+            // Personal info
+            $('#summary-name').text($('#name').val());
+            $('#summary-contact').text($('#email').val() + ' | ' + $('#phone').val());
+            
+            // Notes (optional)
+            if ($('#notes').val().trim()) {
+                $('#notes-container').show();
+                $('#summary-notes').text($('#notes').val());
+            } else {
+                $('#notes-container').hide();
+            }
+        }
+        
+        // Initialize service cards
+        generateServiceCards();
+    });
+</script>
+{% endblock %}

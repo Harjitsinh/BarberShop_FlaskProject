@@ -1,0 +1,64 @@
+Fama Barber Shop Project Structure
+==============================
+
+├── app.py                      # Main Flask application file
+├── requirements.txt            # Python dependencies
+├── README.md                   # Project documentation
+├── .env                        # Environment variables (not in version control)
+│
+├── instance/                   # Instance-specific files
+│   └── barbershop.db           # SQLite database
+│
+├── static/                     # Static files
+│   ├── css/                    # CSS stylesheets
+│   │   ├── style.css           # Main CSS for frontend
+│   │   └── admin.css           # CSS for admin dashboard
+│   │
+│   ├── js/                     # JavaScript files
+│   │   ├── main.js             # Main JS for frontend
+│   │   └── admin.js            # JS for admin dashboard
+│   │
+│   ├── img/                    # Image assets
+│   │   ├── logo.png            # Site logo
+│   │   ├── about.jpg           # About section image
+│   │   ├── about-main.jpg      # Main about page image
+│   │   ├── signature.png       # Owner signature
+│   │   ├── team/               # Team member photos
+│   │   │   ├── barber1.jpg
+│   │   │   ├── barber2.jpg
+│   │   │   ├── barber3.jpg
+│   │   │   └── barber4.jpg
+│   │   │
+│   │   └── gallery/            # Default gallery images
+│   │       ├── gallery1.jpg
+│   │       ├── gallery2.jpg
+│   │       ├── gallery3.jpg
+│   │       ├── gallery4.jpg
+│   │       ├── gallery5.jpg
+│   │       ├── gallery6.jpg
+│   │       ├── gallery7.jpg
+│   │       └── gallery8.jpg
+│   │
+│   └── uploads/                # User uploaded content (gallery images)
+│
+└── templates/                  # HTML templates
+    ├── base.html               # Base template with common elements
+    ├── index.html              # Homepage
+    ├── about.html              # About page
+    ├── services.html           # Services page
+    ├── gallery.html            # Gallery page
+    ├── testimonials.html       # Testimonials page
+    ├── contact.html            # Contact page
+    ├── booking.html            # Booking page
+    ├── login.html              # Admin login page
+    │
+    └── admin/                  # Admin templates
+        ├── layout.html         # Admin base template
+        ├── dashboard.html      # Admin dashboard
+        ├── services.html       # Services management
+        ├── edit_service.html   # Edit service form
+        ├── appointments.html   # Appointments management
+        ├── gallery.html        # Gallery management
+        ├── testimonials.html   # Testimonials management
+        ├── messages.html       # Messages management
+        └── view_message.html   # View single message 

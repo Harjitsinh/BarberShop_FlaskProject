@@ -1,0 +1,523 @@
+{% extends "base.html" %}
+
+{% block title %}Testimonials | Fama Barber Shop and Beauty Salon{% endblock %}
+
+{% block styles %}
+<style>
+    .page-header {
+        background-image: linear-gradient(rgba(17, 17, 17, 0.7), rgba(17, 17, 17, 0.7)), url("{{ url_for('static', filename='img/gallery/gallery3.jpg') }}");
+        background-position: center;
+        background-size: cover;
+    }
+    
+    .reviews-overview {
+        padding: 80px 0;
+        background-color: var(--light-color);
+    }
+    
+    .rating-summary {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 30px 0;
+    }
+    
+    .rating-stars {
+        color: var(--primary-color);
+        font-size: 2rem;
+        margin-bottom: 10px;
+    }
+    
+    .rating-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--secondary-color);
+        margin-bottom: 5px;
+    }
+    
+    .review-count {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+    }
+    
+    .testimonials-grid-section {
+        padding: 80px 0;
+        background-color: #f9f9f9;
+    }
+    
+    .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 30px;
+        margin-top: 40px;
+    }
+    
+    .testimonial-card {
+        background-color: var(--light-color);
+        border-radius: 6px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        padding: 25px;
+        transition: all 0.3s ease;
+    }
+    
+    .testimonial-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+    }
+    
+    .testimonial-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .client-info {
+        display: flex;
+        align-items: center;
+    }
+    
+    .client-initial {
+        width: 45px;
+        height: 45px;
+        background-color: var(--primary-color);
+        color: var(--light-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-right: 12px;
+    }
+    
+    .client-name {
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+    
+    .review-date {
+        color: var(--text-muted);
+        font-size: 0.85rem;
+    }
+    
+    .testimonial-rating {
+        color: var(--primary-color);
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+    }
+    
+    .testimonial-content {
+        line-height: 1.6;
+    }
+    
+    .testimonial-content p {
+        margin-bottom: 0;
+    }
+    
+    .leave-review-section {
+        padding: 100px 0;
+        background-color: var(--light-color);
+    }
+    
+    .review-form-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background-color: #fff;
+        border-radius: 6px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.05);
+        padding: 40px;
+    }
+    
+    .review-form {
+        margin-top: 30px;
+    }
+    
+    .form-group {
+        margin-bottom: 25px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+    
+    .form-control:focus {
+        border-color: var(--primary-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(200, 169, 126, 0.2);
+    }
+    
+    .rating-select {
+        display: flex;
+        align-items: center;
+    }
+    
+    .form-submit {
+        margin-top: 30px;
+    }
+    
+    .form-error {
+        color: #dc3545;
+        font-size: 0.9rem;
+        margin-top: 5px;
+    }
+    
+    .review-note {
+        margin-top: 25px;
+        text-align: center;
+        font-size: 0.9rem;
+        color: var(--text-muted);
+    }
+    
+    .review-platforms {
+        padding: 80px 0;
+        background-color: #f9f9f9;
+    }
+    
+    .platform-icons {
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-top: 30px;
+    }
+    
+    .platform-icon {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        color: var(--text-color);
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .platform-icon:hover {
+        color: var(--primary-color);
+        transform: translateY(-5px);
+    }
+    
+    .platform-icon i {
+        font-size: 2.5rem;
+        margin-bottom: 10px;
+    }
+    
+    .load-more-container {
+        margin-top: 40px;
+    }
+    
+    .load-more-btn {
+        padding: 12px 30px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <h1 data-aos="fade-up">Client Testimonials</h1>
+        <div class="breadcrumbs" data-aos="fade-up" data-aos-delay="100">
+            <a href="{{ url_for('index') }}">Home</a> / <span>Testimonials</span>
+        </div>
+    </div>
+</section>
+
+<!-- Reviews Overview -->
+<section class="reviews-overview">
+    <div class="container">
+        <div class="overview-content text-center" data-aos="fade-up">
+            <h2 class="section-title">What Our Clients Say</h2>
+            <div class="rating-summary">
+                <div class="rating-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <div class="rating-number">4.6/5</div>
+                <div class="review-count">Based on 116+ reviews</div>
+            </div>
+            <p>We're proud of our reputation for excellence and customer satisfaction. Here's what our clients have to say about their experience at Fama Barber Shop and Beauty Salon.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Reviews Grid -->
+<section class="testimonials-grid-section">
+    <div class="container">
+        <div class="testimonials-grid">
+            {% for testimonial in testimonials %}
+            <div class="testimonial-card" data-aos="fade-up">
+                <div class="testimonial-header">
+                    <div class="client-info">
+                        <div class="client-initial">{{ testimonial.name[0] }}</div>
+                        <div class="client-name">{{ testimonial.name }}</div>
+                    </div>
+                    <div class="review-date">{{ testimonial.date.strftime('%B %d, %Y') }}</div>
+                </div>
+                <div class="testimonial-rating">
+                    {% for i in range(1, 6) %}
+                        {% if i <= testimonial.rating %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <div class="testimonial-content">
+                    <p>"{{ testimonial.comment }}"</p>
+                </div>
+            </div>
+            {% else %}
+            <!-- Display placeholders if no testimonials exist -->
+            <div class="testimonial-card" data-aos="fade-up">
+                <div class="testimonial-header">
+                    <div class="client-info">
+                        <div class="client-initial">J</div>
+                        <div class="client-name">John Doe</div>
+                    </div>
+                    <div class="review-date">January 15, 2023</div>
+                </div>
+                <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                    <i class="far fa-star"></i>
+                </div>
+                <div class="testimonial-content">
+                    <p>"Visiting Fama Barber Shop completely transformed my look. The barber took the time to understand exactly what I wanted and delivered perfectly. Worth every penny!"</p>
+                </div>
+            </div>
+            <div class="testimonial-card" data-aos="fade-up">
+                <div class="testimonial-header">
+                    <div class="client-info">
+                        <div class="client-initial">M</div>
+                        <div class="client-name">Michael Smith</div>
+                    </div>
+                    <div class="review-date">February 10, 2023</div>
+                </div>
+                <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="testimonial-content">
+                    <p>"Best haircut I've ever had! The attention to detail is amazing. Highly recommend James for anyone looking for a classic cut with modern styling. The hot towel service was an unexpected but welcome bonus."</p>
+                </div>
+            </div>
+            <div class="testimonial-card" data-aos="fade-up">
+                <div class="testimonial-header">
+                    <div class="client-info">
+                        <div class="client-initial">D</div>
+                        <div class="client-name">David Johnson</div>
+                    </div>
+                    <div class="review-date">March 5, 2023</div>
+                </div>
+                <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="far fa-star"></i>
+                </div>
+                <div class="testimonial-content">
+                    <p>"Great atmosphere and professional service. The hot towel shave was particularly relaxing. Will definitely be back. The shop itself has a great vibe with classic music playing in the background and comfortable chairs."</p>
+                </div>
+            </div>
+            <div class="testimonial-card" data-aos="fade-up">
+                <div class="testimonial-header">
+                    <div class="client-info">
+                        <div class="client-initial">R</div>
+                        <div class="client-name">Robert Williams</div>
+                    </div>
+                    <div class="review-date">April 22, 2023</div>
+                </div>
+                <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="testimonial-content">
+                    <p>"Been coming here for years. Never had a bad experience. The entire team is skilled and friendly. Wouldn't go anywhere else. They always remember my preferred style and make great suggestions when I want to try something new."</p>
+                </div>
+            </div>
+            <div class="testimonial-card" data-aos="fade-up">
+                <div class="testimonial-header">
+                    <div class="client-info">
+                        <div class="client-initial">A</div>
+                        <div class="client-name">Alex Thompson</div>
+                    </div>
+                    <div class="review-date">May 18, 2023</div>
+                </div>
+                <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="testimonial-content">
+                    <p>"First time at Fama and I'm completely impressed. Emily gave me the best fade I've ever had, and the beard trim was perfect. The complimentary beverage while waiting was a nice touch too. Already booked my next appointment!"</p>
+                </div>
+            </div>
+            <div class="testimonial-card" data-aos="fade-up">
+                <div class="testimonial-header">
+                    <div class="client-info">
+                        <div class="client-initial">K</div>
+                        <div class="client-name">Kevin Martinez</div>
+                    </div>
+                    <div class="review-date">June 7, 2023</div>
+                </div>
+                <div class="testimonial-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="testimonial-content">
+                    <p>"The VIP package is absolutely worth it! Haircut, beard trim, facial, and styling all in one visit. Left feeling like a new man. The head massage during shampooing was incredibly relaxing. This place understands true customer service."</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Leave a Review -->
+<section class="leave-review-section">
+    <div class="container">
+        <div class="review-form-container" data-aos="fade-up">
+            <h2 class="section-title">Share Your Experience</h2>
+            <p>We value your feedback! Let us know about your visit to Fama Barber Shop and Beauty Salon. Your honest review helps us improve our services and helps other clients make informed decisions.</p>
+            
+            <form action="{{ url_for('add_testimonial') }}" method="post" class="review-form">
+                {{ form.csrf_token }}
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    {{ form.name(class="form-control", placeholder="Enter your full name") }}
+                    {% if form.name.errors %}
+                        <div class="form-error">{{ form.name.errors[0] }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="rating">Your Rating</label>
+                    <div class="rating-select">
+                        {{ form.rating(class="form-control") }}
+                    </div>
+                    {% if form.rating.errors %}
+                        <div class="form-error">{{ form.rating.errors[0] }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-group">
+                    <label for="comment">Your Review</label>
+                    {{ form.comment(class="form-control", rows=5, placeholder="Tell us about your experience at Fama Barber Shop... What did you like? What service did you receive? How was your overall experience?") }}
+                    {% if form.comment.errors %}
+                        <div class="form-error">{{ form.comment.errors[0] }}</div>
+                    {% endif %}
+                </div>
+                
+                <div class="form-submit">
+                    {{ form.submit(class="btn") }}
+                </div>
+            </form>
+            
+            <div class="review-note">
+                <p>Note: All reviews are moderated before appearing on our website to ensure quality content. Thank you for your understanding.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Review Platforms -->
+<section class="review-platforms">
+    <div class="container">
+        <div class="platforms-content text-center" data-aos="fade-up">
+            <h2 class="section-title">Find Us On Review Platforms</h2>
+            <p>Your reviews help others discover the quality services we provide. Consider leaving us a review on these platforms:</p>
+            
+            <div class="platform-icons">
+                <a href="#" class="platform-icon">
+                    <i class="fab fa-yelp"></i>
+                    <span>Yelp</span>
+                </a>
+                <a href="#" class="platform-icon">
+                    <i class="fab fa-google"></i>
+                    <span>Google</span>
+                </a>
+                <a href="#" class="platform-icon">
+                    <i class="fab fa-facebook-f"></i>
+                    <span>Facebook</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-inner" data-aos="fade-up">
+            <h2>Experience the Difference</h2>
+            <p>Join our satisfied customers and book your appointment today.</p>
+            <a href="{{ url_for('booking') }}" class="btn btn-light">Book Appointment</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        // Show more reviews functionality
+        var testimonialCount = $('.testimonial-card').length;
+        var initialDisplay = 8;
+        
+        // Hide testimonials beyond initial display count
+        if (testimonialCount > initialDisplay) {
+            $('.testimonial-card').slice(initialDisplay).hide();
+            $('.testimonials-grid').after('<div class="text-center load-more-container"><button class="btn load-more-btn">Load More Reviews</button></div>');
+        }
+        
+        // Load more reviews when button clicked
+        $('.load-more-btn').on('click', function() {
+            $('.testimonial-card:hidden').slice(0, 4).slideDown();
+            
+            if ($('.testimonial-card:hidden').length === 0) {
+                $('.load-more-container').hide();
+            }
+        });
+        
+        // Star rating animation
+        $('.rating-stars i').each(function(index) {
+            $(this).css('opacity', 0);
+            setTimeout(function() {
+                $('.rating-stars i').eq(index).css({
+                    'opacity': 1,
+                    'transform': 'scale(1.2)'
+                });
+                setTimeout(function() {
+                    $('.rating-stars i').eq(index).css('transform', 'scale(1)');
+                }, 200);
+            }, index * 150);
+        });
+    });
+</script>
+{% endblock %} 

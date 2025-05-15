@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+
+{% block title %}About Us | Fama Barber Shop and Beauty Salon{% endblock %}
+
+{% block styles %}
+<style>
+    .page-header {
+        background-image: linear-gradient(rgba(17, 17, 17, 0.7), rgba(17, 17, 17, 0.7)), url("{{ url_for('static', filename='img/about-main.jpg') }}");
+        background-position: center;
+        background-size: cover;
+    }
+    
+    .member-image img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+    
+    .member-image {
+        overflow: hidden;
+        border-radius: 4px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .member-info {
+        padding: 20px 0;
+    }
+    
+    .member-role {
+        color: var(--primary-color);
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+    
+    .about-main {
+        padding: 80px 0;
+    }
+    
+    .about-content {
+        padding-right: 50px;
+    }
+    
+    .about-image img {
+        box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        border-radius: 4px;
+    }
+    
+    .features-grid {
+        margin-top: 60px;
+    }
+    
+    .feature-item {
+        transition: all 0.3s ease;
+    }
+    
+    .feature-item:hover {
+        transform: translateY(-10px);
+    }
+    
+    .story-content {
+        max-width: 900px;
+        margin: 0 auto;
+        line-height: 1.8;
+    }
+    
+    .our-story-section {
+        background-color: #f9f9f9;
+        padding: 100px 0;
+    }
+    
+    .team-section {
+        padding: 100px 0;
+    }
+    
+    .about-signature {
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .about-signature img {
+        height: 60px;
+        margin-right: 20px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <h1 data-aos="fade-up">About Us</h1>
+        <div class="breadcrumbs" data-aos="fade-up" data-aos-delay="100">
+            <a href="{{ url_for('index') }}">Home</a> / <span>About Us</span>
+        </div>
+    </div>
+</section>
+
+<!-- About Main Section -->
+<section class="about-main">
+    <div class="container">
+        <div class="about-grid">
+            <div class="about-content" data-aos="fade-right">
+                <h2 class="section-title">Welcome to Fama Barber Shop and Beauty Salon</h2>
+                <div class="rating-badge">
+                    <span class="stars">★★★★★</span>
+                    <span class="rating-number">4.6</span>
+                    <span class="reviews">(116+ reviews)</span>
+                </div>
+                <p>Established in the heart of Denton, Texas, Fama Barber Shop and Beauty Salon has been serving the community with exceptional grooming services. Our commitment to quality, attention to detail, and focus on customer satisfaction have earned us a reputation as one of the finest barber shops in the area.</p>
+                <p>We believe that a great haircut is more than just a service—it's an experience. That's why we've created a welcoming environment where you can relax, enjoy good conversation, and leave looking and feeling your best.</p>
+                <p>Our team of skilled barbers brings years of experience and passion to their craft. Each professional is trained in the latest techniques while honoring traditional barbering methods that have stood the test of time.</p>
+                <div class="about-signature">
+                    <img src="{{ url_for('static', filename='img/signature.png') }}" alt="Owner Signature">
+                    <p>Michael Johnson, <br>Owner, Fama Barber Shop</p>
+                </div>
+            </div>
+            <div class="about-image" data-aos="fade-left">
+                <img src="{{ url_for('static', filename='img/about-main.jpg') }}" alt="Fama Barber Shop">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="why-choose-section">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <h2 class="section-title">Why Choose Us</h2>
+            <p class="section-subtitle">What Sets Us Apart</p>
+        </div>
+        
+        <div class="features-grid three-col">
+            <div class="feature-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="feature-icon">
+                    <i class="fas fa-medal"></i>
+                </div>
+                <h3>Expert Barbers</h3>
+                <p>Our team consists of highly skilled professionals with years of experience in the industry.</p>
+            </div>
+            <div class="feature-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-icon">
+                    <i class="fas fa-smile"></i>
+                </div>
+                <h3>Customer-Focused</h3>
+                <p>We listen to your needs and ensure you leave completely satisfied with your experience.</p>
+            </div>
+            <div class="feature-item" data-aos="fade-up" data-aos-delay="300">
+                <div class="feature-icon">
+                    <i class="fas fa-cut"></i>
+                </div>
+                <h3>Quality Service</h3>
+                <p>We use premium products and techniques to deliver exceptional results every time.</p>
+            </div>
+            <div class="feature-item" data-aos="fade-up" data-aos-delay="400">
+                <div class="feature-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>Convenient Hours</h3>
+                <p>Open until 7pm on weekdays to accommodate your busy schedule.</p>
+            </div>
+            <div class="feature-item" data-aos="fade-up" data-aos-delay="500">
+                <div class="feature-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <h3>Prime Location</h3>
+                <p>Conveniently located at 500 N Bell Ave #109, Denton, TX with easy access and parking.</p>
+            </div>
+            <div class="feature-item" data-aos="fade-up" data-aos-delay="600">
+                <div class="feature-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3>Online Booking</h3>
+                <p>Easily schedule your appointment online at your convenience.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Story -->
+<section class="our-story-section">
+    <div class="container">
+        <div class="story-inner" data-aos="fade-up">
+            <div class="section-header text-center">
+                <h2 class="section-title">Our Story</h2>
+                <p class="section-subtitle">How It All Began</p>
+            </div>
+            
+            <div class="story-content">
+                <p>Fama Barber Shop and Beauty Salon was founded with a simple yet profound vision: to create a space where clients could receive exceptional grooming services in a warm, welcoming environment. What started as a small, family-owned business has grown into a beloved establishment in the Denton community.</p>
+                
+                <p>The journey began when our founder, Michael Johnson, who had been cutting hair since youth, decided to turn passion into profession. After years of training and working in various barbershops, the dream of opening a unique establishment that combined traditional barbering with modern techniques became reality.</p>
+                
+                <p>Through hard work, dedication to the craft, and unwavering commitment to customer satisfaction, Fama has become the go-to destination for those seeking quality haircuts and grooming services in Denton, TX. Today, we continue to build on that foundation, constantly improving our skills and services to meet the evolving needs of our clients.</p>
+                
+                <p>We're proud of our 4.6-star rating and the trust that over 116 reviewers have placed in us. Every day, we strive to maintain that standard of excellence and to make each client's experience exceptional.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="team-section">
+    <div class="container">
+        <div class="section-header text-center" data-aos="fade-up">
+            <h2 class="section-title">Meet Our Team</h2>
+            <p class="section-subtitle">Skilled Professionals</p>
+        </div>
+        
+        <div class="team-grid">
+            <div class="team-member" data-aos="fade-up" data-aos-delay="100">
+                <div class="member-image">
+                    <img src="{{ url_for('static', filename='img/team/barber1.jpg') }}" alt="Master Barber">
+                </div>
+                <div class="member-info">
+                    <h3>James Wilson</h3>
+                    <p class="member-role">Master Barber</p>
+                    <p class="member-bio">With over 15 years of experience, James specializes in classic cuts and precision fades. His attention to detail ensures you leave looking your absolute best.</p>
+                </div>
+            </div>
+            <div class="team-member" data-aos="fade-up" data-aos-delay="200">
+                <div class="member-image">
+                    <img src="{{ url_for('static', filename='img/team/barber2.jpg') }}" alt="Style Specialist">
+                </div>
+                <div class="member-info">
+                    <h3>Maria Rodriguez</h3>
+                    <p class="member-role">Style Specialist</p>
+                    <p class="member-bio">Maria brings creativity and innovation to every haircut, specializing in modern styles and color. Her artistic approach makes her a favorite among our trendy clients.</p>
+                </div>
+            </div>
+            <div class="team-member" data-aos="fade-up" data-aos-delay="300">
+                <div class="member-image">
+                    <img src="{{ url_for('static', filename='img/team/barber3.jpg') }}" alt="Beard Expert">
+                </div>
+                <div class="member-info">
+                    <h3>David Thompson</h3>
+                    <p class="member-role">Beard Expert</p>
+                    <p class="member-bio">David is your go-to for beard trims, styling, and hot towel shaves that leave you feeling refreshed. His precision with a straight razor is unmatched in the area.</p>
+                </div>
+            </div>
+            <div class="team-member" data-aos="fade-up" data-aos-delay="400">
+                <div class="member-image">
+                    <img src="{{ url_for('static', filename='img/team/barber4.jpg') }}" alt="Junior Barber">
+                </div>
+                <div class="member-info">
+                    <h3>Emily Chen</h3>
+                    <p class="member-role">Junior Barber</p>
+                    <p class="member-bio">Emily is our newest team member with a fresh perspective and specialized training in trending styles. Her innovative approach to hair styling brings a modern touch to our shop.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-inner" data-aos="fade-up">
+            <h2>Experience the Fama Difference</h2>
+            <p>Visit us today or book your appointment online.</p>
+            <a href="{{ url_for('booking') }}" class="btn btn-light">Book Appointment</a>
+        </div>
+    </div>
+</section>
+{% endblock %} 

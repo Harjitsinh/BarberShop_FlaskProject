@@ -1,0 +1,373 @@
+{% extends "base.html" %}
+
+{% block title %}Gallery | Fama Barber Shop and Beauty Salon{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css">
+<style>
+    .page-header {
+        background-image: linear-gradient(rgba(17, 17, 17, 0.7), rgba(17, 17, 17, 0.7)), url("{{ url_for('static', filename='img/gallery/gallery3.jpg') }}");
+        background-position: center;
+        background-size: cover;
+    }
+    
+    .gallery-intro {
+        padding: 80px 0;
+        background-color: var(--light-color);
+    }
+    
+    .gallery-main {
+        padding: 80px 0;
+        background-color: #f9f9f9;
+    }
+    
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 25px;
+        margin-top: 40px;
+    }
+    
+    .gallery-item {
+        border-radius: 4px;
+        overflow: hidden;
+        position: relative;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .gallery-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+    
+    .gallery-item img {
+        width: 100%;
+        height: 280px;
+        object-fit: cover;
+        display: block;
+    }
+    
+    .gallery-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        opacity: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    
+    .gallery-item:hover .gallery-overlay {
+        opacity: 1;
+    }
+    
+    .overlay-content {
+        color: white;
+        text-align: center;
+        padding: 0 20px;
+    }
+    
+    .overlay-content i {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+    }
+    
+    .overlay-content p {
+        font-size: 1.1rem;
+        margin: 0;
+    }
+    
+    .filter-buttons {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+    
+    .filter-btn {
+        background: none;
+        border: 1px solid rgba(0,0,0,0.1);
+        padding: 10px 25px;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: var(--transition);
+        font-size: 0.95rem;
+    }
+    
+    .filter-btn.active,
+    .filter-btn:hover {
+        background-color: var(--primary-color);
+        color: var(--light-color);
+        border-color: var(--primary-color);
+    }
+    
+    .share-style-section {
+        padding: 80px 0;
+        background-color: var(--light-color);
+    }
+    
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        margin-top: 30px;
+    }
+    
+    .social-icon {
+        width: 50px;
+        height: 50px;
+        background-color: var(--primary-color);
+        color: var(--light-color);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .social-icon:hover {
+        transform: translateY(-5px);
+        background-color: var(--secondary-color);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <h1 data-aos="fade-up">Our Gallery</h1>
+        <div class="breadcrumbs" data-aos="fade-up" data-aos-delay="100">
+            <a href="{{ url_for('index') }}">Home</a> / <span>Gallery</span>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery Intro -->
+<section class="gallery-intro">
+    <div class="container">
+        <div class="intro-content text-center" data-aos="fade-up">
+            <h2 class="section-title">Fresh Styles & Happy Clients</h2>
+            <p>Browse through our collection of hairstyles, beard trims, and transformations. Get inspired for your next visit to Fama Barber Shop and Beauty Salon.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Filter Categories -->
+<section class="gallery-filters">
+    <div class="container">
+        <div class="filter-buttons text-center" data-aos="fade-up">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="haircuts">Haircuts</button>
+            <button class="filter-btn" data-filter="beards">Beard Trims</button>
+            <button class="filter-btn" data-filter="styles">Styling</button>
+            <button class="filter-btn" data-filter="shop">Shop</button>
+        </div>
+    </div>
+</section>
+
+<!-- Gallery Grid -->
+<section class="gallery-main">
+    <div class="container">
+        <div class="gallery-grid masonry-grid">
+            {% for image in images %}
+            <div class="gallery-item" data-category="all" data-aos="fade-up">
+                <a href="{{ url_for('static', filename='uploads/' + image.filename) }}" class="gallery-link" data-lightbox="gallery" data-title="{{ image.description or 'Fama Barber Shop' }}">
+                    <img src="{{ url_for('static', filename='uploads/' + image.filename) }}" alt="{{ image.description or 'Gallery Image' }}">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <i class="fas fa-search-plus"></i>
+                            {% if image.description %}
+                            <p>{{ image.description }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% else %}
+            <!-- Placeholder images if no gallery images exist yet -->
+            <div class="gallery-item" data-category="haircuts" data-aos="fade-up">
+                <a href="{{ url_for('static', filename='img/gallery/gallery1.jpg') }}" class="gallery-link" data-lightbox="gallery" data-title="Classic Men's Cut">
+                    <img src="{{ url_for('static', filename='img/gallery/gallery1.jpg') }}" alt="Classic Men's Cut">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <i class="fas fa-search-plus"></i>
+                            <p>Classic Men's Cut</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="gallery-item" data-category="beards" data-aos="fade-up" data-aos-delay="100">
+                <a href="{{ url_for('static', filename='img/gallery/gallery2.jpg') }}" class="gallery-link" data-lightbox="gallery" data-title="Beard Trim & Styling">
+                    <img src="{{ url_for('static', filename='img/gallery/gallery2.jpg') }}" alt="Beard Trim & Styling">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <i class="fas fa-search-plus"></i>
+                            <p>Beard Trim & Styling</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="gallery-item" data-category="styles" data-aos="fade-up" data-aos-delay="200">
+                <a href="{{ url_for('static', filename='img/gallery/gallery3.jpg') }}" class="gallery-link" data-lightbox="gallery" data-title="Modern Fade">
+                    <img src="{{ url_for('static', filename='img/gallery/gallery3.jpg') }}" alt="Modern Fade">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <i class="fas fa-search-plus"></i>
+                            <p>Modern Fade</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="gallery-item" data-category="haircuts" data-aos="fade-up">
+                <a href="{{ url_for('static', filename='img/gallery/gallery4.jpg') }}" class="gallery-link" data-lightbox="gallery" data-title="Textured Crop">
+                    <img src="{{ url_for('static', filename='img/gallery/gallery4.jpg') }}" alt="Textured Crop">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <i class="fas fa-search-plus"></i>
+                            <p>Textured Crop</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="gallery-item" data-category="beards" data-aos="fade-up" data-aos-delay="100">
+                <a href="{{ url_for('static', filename='img/gallery/gallery5.jpg') }}" class="gallery-link" data-lightbox="gallery" data-title="Full Beard Grooming">
+                    <img src="{{ url_for('static', filename='img/gallery/gallery5.jpg') }}" alt="Full Beard Grooming">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <i class="fas fa-search-plus"></i>
+                            <p>Full Beard Grooming</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="gallery-item" data-category="shop" data-aos="fade-up" data-aos-delay="200">
+                <a href="{{ url_for('static', filename='img/gallery/gallery6.jpg') }}" class="gallery-link" data-lightbox="gallery" data-title="Shop Interior">
+                    <img src="{{ url_for('static', filename='img/gallery/gallery6.jpg') }}" alt="Shop Interior">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <i class="fas fa-search-plus"></i>
+                            <p>Shop Interior</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="gallery-item" data-category="styles" data-aos="fade-up">
+                <a href="{{ url_for('static', filename='img/gallery/gallery7.jpg') }}" class="gallery-link" data-lightbox="gallery" data-title="Pompadour Style">
+                    <img src="{{ url_for('static', filename='img/gallery/gallery7.jpg') }}" alt="Pompadour Style">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <i class="fas fa-search-plus"></i>
+                            <p>Pompadour Style</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            
+            <div class="gallery-item" data-category="shop" data-aos="fade-up" data-aos-delay="100">
+                <a href="{{ url_for('static', filename='img/gallery/gallery8.jpg') }}" class="gallery-link" data-lightbox="gallery" data-title="Barber Tools">
+                    <img src="{{ url_for('static', filename='img/gallery/gallery8.jpg') }}" alt="Barber Tools">
+                    <div class="gallery-overlay">
+                        <div class="overlay-content">
+                            <i class="fas fa-search-plus"></i>
+                            <p>Barber Tools</p>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Share Your Style -->
+<section class="share-style-section">
+    <div class="container">
+        <div class="share-content text-center" data-aos="fade-up">
+            <h2 class="section-title">Share Your Style</h2>
+            <p>Love your new look? Tag us on social media with #FamaBarberShop to be featured in our gallery.</p>
+            
+            <div class="social-icons">
+                <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-inner" data-aos="fade-up">
+            <h2>Ready for Your Transformation?</h2>
+            <p>Book your appointment today and let our skilled barbers create your next great look.</p>
+            <a href="{{ url_for('booking') }}" class="btn btn-light">Book Appointment</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+<script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Initialize Lightbox
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true,
+            'disableScrolling': true
+        });
+        
+        // Initialize Masonry after all images are loaded
+        var $grid = $('.masonry-grid').imagesLoaded(function() {
+            $grid.masonry({
+                itemSelector: '.gallery-item',
+                percentPosition: true,
+                columnWidth: '.gallery-item'
+            });
+        });
+        
+        // Gallery filtering
+        $('.filter-btn').on('click', function() {
+            var filterValue = $(this).attr('data-filter');
+            
+            // Update active button
+            $('.filter-btn').removeClass('active');
+            $(this).addClass('active');
+            
+            if (filterValue === 'all') {
+                $('.gallery-item').show();
+            } else {
+                $('.gallery-item').hide();
+                $('.gallery-item[data-category="' + filterValue + '"]').show();
+            }
+            
+            // Re-layout Masonry after filtering
+            $grid.masonry('layout');
+        });
+        
+        // Add animation to gallery items
+        $('.gallery-item').each(function(index) {
+            $(this).attr('data-aos', 'fade-up');
+            $(this).attr('data-aos-delay', ((index % 3) * 100).toString());
+        });
+    });
+</script>
+{% endblock %} 
