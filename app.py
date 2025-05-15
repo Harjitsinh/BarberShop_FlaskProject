@@ -20,7 +20,7 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max upload
 
 # Flask Mail configuration
-app.config['MAIL_SERVER'] = 'harjitsinh.raol701@gmail.com'  # Update with your mail server
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'  # Update with your mail server
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = 'harjitsinh.raol701@gmail.com'  # Update with your email
